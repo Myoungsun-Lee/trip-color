@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "ISO_A3": "KOR",
+        "NAME": "South Korea",
+        "CENTER": [127.7669, 35.9078]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [126.0, 33.0],
+            [129.5, 33.0],
+            [129.5, 38.5],
+            [126.0, 38.5],
+            [126.0, 33.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ISO_A3": "JPN",
+        "NAME": "Japan",
+        "CENTER": [138.2529, 36.2048]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [129.0, 31.0],
+            [146.0, 31.0],
+            [146.0, 45.0],
+            [129.0, 45.0],
+            [129.0, 31.0]
+          ]
+        ]
+      }
+    }
+  ]
+}

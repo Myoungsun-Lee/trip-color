@@ -1,0 +1,27 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 전체 화면 높이 */
+}
+
+.search {
+  flex: 0 0 10%; /* 높이 비율 10% */
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map {
+  flex: 1 0 80%; /* 높이 비율 80% */
+  background-color: #e0e0e0;
+}
+
+.mytrip {
+  flex: 0 0 10%; /* 높이 비율 10% */
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
