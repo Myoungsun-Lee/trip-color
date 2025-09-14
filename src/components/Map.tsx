@@ -39,11 +39,11 @@ const MyMap = ({ visitedCities }: { visitedCities: any }) => {
         onMove={evt => setZoom(evt.viewState.zoom)}
       >
         {/*방문한 나라 영역 색칠 (줌 6 이하에서만 보이도록)*/}
-        {zoom <= 6 && (
+        {zoom <= 5 && (
           <Source
             id="visited-countries"
             type="geojson"
-            data={filteredCountries} 
+            data={filteredCountries}
           >
             <Layer
               id="visited-countries-fill"
@@ -59,16 +59,18 @@ const MyMap = ({ visitedCities }: { visitedCities: any }) => {
         )}
 
         {/* 도시 Marker */}
-        {zoom > 6 && Object.values(visitedCities).flat().map((city: any) => (
-          <Marker key={city.name} latitude={city.lat} longitude={city.lng}>
-            <div style={{
-              width: 50,
-              height: 50,
-              borderRadius: '500%',
-              backgroundColor: 'rgba(135, 206, 250, 0.5)',
-              border: '2px solid #1E90FF',
-            }} />
-          </Marker>
+        {zoom > 5 && Object.values(visitedCities).flat().map((city: any) => (
+          city.lat != null && city.lng != null ? ( //lat/lng 확인
+            <Marker key={city.name} latitude={city.lat} longitude={city.lng}>
+              <div style={{
+                width: 50,
+                height: 50,
+                borderRadius: '500%',
+                backgroundColor: 'rgba(135, 206, 250, 0.5)',
+                border: '2px solid #1E90FF',
+              }} />
+            </Marker>
+          ) : null
         ))}
       </Map>
 
