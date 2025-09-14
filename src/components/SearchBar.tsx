@@ -1,162 +1,222 @@
 import React, { useState } from "react";
+import { countries } from "../data/countries.ts";
+import { cities } from "../data/cities.ts";
 
-// 예시 나라/도시 데이터
-const countriesAndCities = [
-  { name: "South Korea", code: "KOR", lat: 37.5665, lng: 126.9780 },
-  { name: "Seoul", code: "KOR", lat: 37.5665, lng: 126.9780 },
-  { name: "Busan", code: "KOR", lat: 35.1796, lng: 129.0756 },
-  { name: "Japan", code: "JPN", lat: 35.6895, lng: 139.6917 },
-  { name: "Tokyo", code: "JPN", lat: 35.6895, lng: 139.6917 },
-];
+type Country = { name: string; code: string };
+type City = { name: string; countryCode: string; lat: number; lng: number };
 
 export default function SearchBar({
-  // App에서 전달하는 callback prop 추가
-  onUpdateVisited,
+    onUpdateVisited,
 }: {
-  onUpdateVisited: (countryCode: string, city: any) => void;
+    onUpdateVisited: (countryCode: string, city: any) => void;
 }) {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<typeof countriesAndCities>([]);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+    const [query, setQuery] = useState("");
+    const [currentTab, setCurrentTab] = useState<"Countries" | "Cities">("Countries");
+    const [results, setResults] = useState<Array<Country | City>>(countries);
+    const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<Country | City | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
-    const filtered = value
-      ? countriesAndCities.filter(item =>
-          item.name.toLowerCase().includes(value.toLowerCase())
-        )
-      : [];
-    setResults(filtered);
-  };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setQuery(value);
 
-  const handleSelectItem = (item: typeof countriesAndCities[0]) => {
-    setSelectedItem(item);
-    setIsSearchModalOpen(false); // 모달 닫기
-  };
+        if (value.trim() === "") {
+            // 검색창 비우면 전체 리스트 보여주기
+            setResults(currentTab === "Countries" ? countries : cities);
+        } else {
+            const filtered = (currentTab === "Countries" ? countries : cities).filter(item =>
+                item.name.toLowerCase().includes(value.toLowerCase())
+            );
+            setResults(filtered);
+        }
+    };
 
-  const closeSelectedModal = () => setSelectedItem(null);
+    const handleSelectItem = (item: Country | City) => {
+        setSelectedItem(item);
+    };
 
-  const handleBeenClick = () => {
-    if (!selectedItem) return;
+    const closeSelectedModal = () => setSelectedItem(null);
 
-    // App state 갱신 콜백 호출
-    onUpdateVisited(selectedItem.code, selectedItem);
+    const handleBeenClick = () => {
+        if (!selectedItem) return;
 
-    closeSelectedModal();
-    setIsSearchModalOpen(true); // 검색 모달 다시 열기
-  };
+        onUpdateVisited(
+            "code" in selectedItem ? selectedItem.code : selectedItem.countryCode,
+            selectedItem
+        );
 
-  return (
-    <>
-      {/* 검색창 */}
-      <input
-        type="text"
-        placeholder="Search for a country or city"
-        onFocus={() => setIsSearchModalOpen(true)}
-        readOnly
-        style={{
-          width: "200px",
-          padding: "8px",
-          fontSize: "16px",
-          cursor: "pointer",
-        }}
-      />
+        closeSelectedModal();
+        setIsSearchPageOpen(true); // 검색 페이지 다시 열기
+    };
 
-      {/* 검색 모달 */}
-      {isSearchModalOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              width: "400px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-              padding: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-              maxHeight: "80vh",
-              overflowY: "auto",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button onClick={() => setIsSearchModalOpen(false)}>X</button>
-            </div>
-
-            <input
-              type="text"
-              placeholder="Search for a country or city"
-              value={query}
-              onChange={handleChange}
-              style={{ padding: "8px", fontSize: "16px" }}
-            />
-
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {results.map((item, idx) => (
-                <li
-                  key={idx}
-                  style={{
+    return (
+        <>
+            {/* 검색 버튼 */}
+            <button
+                onClick={() => setIsSearchPageOpen(true)}
+                style={{
+                    width: "100%",
+                    height: "100%",
                     padding: "8px",
-                    borderBottom: "1px solid #ddd",
+                    fontSize: "16px",
                     cursor: "pointer",
-                  }}
-                  onClick={() => handleSelectItem(item)}
-                >
-                  {item.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+                    borderRadius: "6px",
+                    border: "1px solid #ddd",
+                    backgroundColor: "#f5f5f5",
+                }}
+            >
+                🔍 Search
+            </button>
 
-      {/* 선택 모달 */}
-      {selectedItem && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              width: "300px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-              padding: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-            }}
-          >
-            <h2>{selectedItem.name}</h2>
-            <button onClick={handleBeenClick}>Been</button>
-            <button onClick={closeSelectedModal}>Close</button>
-          </div>
-        </div>
-      )}
-    </>
-  );
+            {/* 전체 화면 검색 페이지 */}
+            {isSearchPageOpen && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1000,
+                    }}
+                >
+                    <div
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "white",
+                            borderRadius: "0px",
+                            padding: "16px",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "12px",
+                        }}
+                    >
+                        {/* 닫기 버튼 */}
+                        <div style={{ display: "flex", justifyContent: "flex-end", paddingTop: "8px" }}>
+                            <button
+                                onClick={() => setIsSearchPageOpen(false)}
+                                style={{
+                                    background: "none",
+                                    border: "none",
+                                    fontSize: "20px",
+                                    cursor: "pointer",
+                                    padding: 0,
+                                    lineHeight: 1,
+                                }}
+                            >
+                                X
+                            </button>
+                        </div>
+
+                        {/* 탭 */}
+                        <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+                            <button
+                                onClick={() => {
+                                    setCurrentTab("Countries");
+                                    setResults(countries);
+                                    setQuery("");
+                                }}
+                                style={{
+                                    flex: 1,
+                                    padding: "10px 16px",
+                                    fontWeight: "bold",
+                                    borderRadius: "8px",
+                                    border: currentTab === "Countries" ? "2px solid #007bff" : "1px solid #ccc",
+                                    backgroundColor: currentTab === "Countries" ? "#e7f0ff" : "#f5f5f5",
+                                    cursor: "pointer",
+                                    fontSize: "16px",
+                                }}
+                            >
+                                Countries
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setCurrentTab("Cities");
+                                    setResults(cities);
+                                    setQuery("");
+                                }}
+                                style={{
+                                    flex: 1,
+                                    padding: "10px 16px",
+                                    fontWeight: "bold",
+                                    borderRadius: "8px",
+                                    border: currentTab === "Cities" ? "2px solid #007bff" : "1px solid #ccc",
+                                    backgroundColor: currentTab === "Cities" ? "#e7f0ff" : "#f5f5f5",
+                                    cursor: "pointer",
+                                    fontSize: "16px",
+                                }}
+                            >
+                                Cities
+                            </button>
+                        </div>
+
+                        {/* 검색창 */}
+                        <input
+                            type="text"
+                            placeholder="Search for a country or city"
+                            value={query}
+                            onChange={handleChange}
+                            style={{ padding: "8px", fontSize: "16px" }}
+                        />
+
+                        {/* 리스트 */}
+                        <ul style={{ listStyle: "none", padding: 0, margin: 0, overflowY: "auto", flex: 1 }}>
+                            {results.map((item, idx) => (
+                                <li
+                                    key={idx}
+                                    style={{
+                                        padding: "8px",
+                                        borderBottom: "1px solid #ddd",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() => handleSelectItem(item)}
+                                >
+                                    {item.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+
+            {/* 선택 모달 */}
+            {selectedItem && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1001,
+                    }}
+                >
+                    <div
+                        style={{
+                            width: "300px",
+                            backgroundColor: "white",
+                            borderRadius: "8px",
+                            padding: "16px",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "12px",
+                        }}
+                    >
+                        <h2>{selectedItem.name}</h2>
+                        <button onClick={handleBeenClick}>Been</button>
+                        <button onClick={closeSelectedModal}>Close</button>
+                    </div>
+                </div>
+            )}
+        </>
+    );
 }
