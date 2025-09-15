@@ -124,12 +124,14 @@ export default function SearchBar({
                                 style={{
                                     flex: 1,
                                     padding: "10px 16px",
-                                    fontWeight: "bold",
-                                    borderRadius: "8px",
-                                    border: currentTab === "Countries" ? "2px solid #007bff" : "1px solid #ccc",
-                                    backgroundColor: currentTab === "Countries" ? "#e7f0ff" : "#f5f5f5",
+                                    fontWeight: "500",
+                                    borderRadius: "10px",
+                                    border: "none",
+                                    backgroundColor: currentTab === "Countries" ? "#007AFF" : "#f2f2f7",
+                                    color: currentTab === "Countries" ? "white" : "#007AFF",
                                     cursor: "pointer",
                                     fontSize: "16px",
+                                    transition: "all 0.2s ease-in-out",
                                 }}
                             >
                                 Countries
@@ -143,12 +145,14 @@ export default function SearchBar({
                                 style={{
                                     flex: 1,
                                     padding: "10px 16px",
-                                    fontWeight: "bold",
-                                    borderRadius: "8px",
-                                    border: currentTab === "Cities" ? "2px solid #007bff" : "1px solid #ccc",
-                                    backgroundColor: currentTab === "Cities" ? "#e7f0ff" : "#f5f5f5",
+                                    fontWeight: "500",
+                                    borderRadius: "10px",
+                                    border: "none",
+                                    backgroundColor: currentTab === "Cities" ? "#007AFF" : "#f2f2f7",
+                                    color: currentTab === "Cities" ? "white" : "#007AFF",
                                     cursor: "pointer",
                                     fontSize: "16px",
+                                    transition: "all 0.2s ease-in-out",
                                 }}
                             >
                                 Cities
@@ -211,9 +215,39 @@ export default function SearchBar({
                             gap: "12px",
                         }}
                     >
-                        <h2>{selectedItem.name}</h2>
-                        <button onClick={handleBeenClick}>Been</button>
-                        <button onClick={closeSelectedModal}>Close</button>
+                        <h2 style={{ fontSize: "18px", marginBottom: "8px" }}>{selectedItem.name}</h2>
+                        <button
+                            onClick={handleBeenClick}
+                            style={{
+                                backgroundColor: "#007AFF", // iOS 파란색
+                                color: "white",
+                                border: "none",
+                                borderRadius: "12px",
+                                padding: "12px",
+                                fontSize: "16px",
+                                fontWeight: "500",
+                                cursor: "pointer",
+                                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                            }}
+                        >
+                            Been
+                        </button>
+
+                        <button
+                            onClick={closeSelectedModal}
+                            style={{
+                                backgroundColor: "#f2f2f7", // iOS 회색 배경
+                                color: "#007AFF", // 파란 글씨
+                                border: "none",
+                                borderRadius: "12px",
+                                padding: "12px",
+                                fontSize: "16px",
+                                fontWeight: "500",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Close
+                        </button>
                     </div>
                 </div>
             )}
