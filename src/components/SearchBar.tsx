@@ -56,13 +56,17 @@ export default function SearchBar({
                 onClick={() => setIsSearchPageOpen(true)}
                 style={{
                     width: "100%",
-                    height: "100%",
-                    padding: "8px",
+                    height: "50%",
+                    padding: "12px 16px",
                     fontSize: "16px",
                     cursor: "pointer",
-                    borderRadius: "6px",
-                    border: "1px solid #ddd",
-                    backgroundColor: "#f5f5f5",
+                    borderRadius: "12px",
+                    border: "none",
+                    backgroundColor: "#2c2c30ff",
+                    color: "#f2f2f7",
+                    boxShadow: "inset 0 -1px 0 0 #ffffff1a",
+                    WebkitAppearance: "none",
+                    transition: "background 0.2s ease-in-out",
                 }}
             >
                 🔍 Search
@@ -96,22 +100,38 @@ export default function SearchBar({
                             gap: "12px",
                         }}
                     >
-                        {/* 닫기 버튼 */}
-                        <div style={{ display: "flex", justifyContent: "flex-end", paddingTop: "8px" }}>
+                        {/* 상단 네비게이션 바 */}
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                padding: "12px 16px",
+                                borderBottom: "1px solid #ffffff1a",
+                            }}
+                        >
+                            {/* 뒤로가기 버튼 */}
                             <button
                                 onClick={() => setIsSearchPageOpen(false)}
                                 style={{
                                     background: "none",
                                     border: "none",
-                                    fontSize: "20px",
+                                    fontSize: "16px",
                                     cursor: "pointer",
-                                    padding: 0,
-                                    lineHeight: 1,
                                 }}
                             >
-                                X
+                                ← Back
                             </button>
+
+                            {/* 타이틀 */}
+                            <span style={{ fontSize: "18px", fontWeight: "600"}}>
+                                Select
+                            </span>
+
+                            {/* 오른쪽은 공간 확보용 (비워두기) */}
+                            <div style={{ width: "50px" }} />
                         </div>
+
 
                         {/* 탭 */}
                         <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
@@ -197,7 +217,7 @@ export default function SearchBar({
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        backgroundColor: "rgba(0,0,0,0.5)",
+                        backgroundColor: "#1a1a1d1a",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
@@ -219,7 +239,7 @@ export default function SearchBar({
                         <button
                             onClick={handleBeenClick}
                             style={{
-                                backgroundColor: "#007AFF", // iOS 파란색
+                                backgroundColor: "#007AFF",
                                 color: "white",
                                 border: "none",
                                 borderRadius: "12px",
@@ -227,7 +247,7 @@ export default function SearchBar({
                                 fontSize: "16px",
                                 fontWeight: "500",
                                 cursor: "pointer",
-                                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                                boxShadow: "0 2px 4px #1a1a1d1a",
                             }}
                         >
                             Been
@@ -236,8 +256,8 @@ export default function SearchBar({
                         <button
                             onClick={closeSelectedModal}
                             style={{
-                                backgroundColor: "#f2f2f7", // iOS 회색 배경
-                                color: "#007AFF", // 파란 글씨
+                                backgroundColor: "#f2f2f7",
+                                color: "#007AFF",
                                 border: "none",
                                 borderRadius: "12px",
                                 padding: "12px",
