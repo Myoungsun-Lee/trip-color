@@ -76,11 +76,14 @@ export default function SearchBar({
     const handleBeenClick = () => {
         if (!selectedItem) return;
 
-        onUpdateVisited(
-            "code" in selectedItem ? selectedItem.code : selectedItem.countryCode,
-            selectedItem
-        );
+        const countryCode =
+            "code" in selectedItem
+                ? selectedItem.code
+                : selectedCountryForCities?.code; // 도시일 때 선택된 나라 코드
 
+        if (!countryCode) return; // null 이슈 처리
+
+        onUpdateVisited(countryCode, selectedItem);
         closeSelectedModal();
         setIsSearchPageOpen(true); // 검색 페이지 다시 열기
     };
@@ -93,7 +96,6 @@ export default function SearchBar({
                 style={{
                     width: "100%",
                     height: "50%",
-                    padding: "12px 16px",
                     fontSize: "16px",
                     cursor: "pointer",
                     borderRadius: "12px",
@@ -285,9 +287,9 @@ export default function SearchBar({
                                             padding: "8px",
                                             borderBottom: "1px solid #ddd",
                                             cursor: "pointer",
-                                            display: "flex",             // 변경: flex 적용
-                                            justifyContent: "space-between", // 변경: 오른쪽 ">" 띄우기
-                                            alignItems: "center",        // 변경: 수직 중앙 정렬
+                                            display: "flex",
+                                            justifyContent: "space-between", // 오른쪽 ">" 띄우기
+                                            alignItems: "center",
                                         }}
                                         onClick={() => handleSelectItem(item)}
                                     >

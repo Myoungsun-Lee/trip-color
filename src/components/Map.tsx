@@ -38,7 +38,7 @@ const MyMap = ({ visitedCities }: { visitedCities: any }) => {
         mapboxAccessToken={MAPBOX_TOKEN}
         onMove={evt => setZoom(evt.viewState.zoom)}
       >
-        {/*방문한 나라 영역 색칠 (줌 6 이하에서만 보이도록)*/}
+        {/*방문한 나라 영역 색칠 (줌 5 이하에서만 보이도록)*/}
         {zoom <= 5 && (
           <Source
             id="visited-countries"
