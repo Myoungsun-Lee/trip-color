@@ -237,6 +237,26 @@ export default function SearchBar({
                         />
 
                         {/* 리스트 */}
+                        {currentTab === "Cities" && selectedCountryForCities && (
+                            <div
+                                style={{
+                                    padding: "8px",
+                                    borderBottom: "1px solid #ddd",
+                                    cursor: "pointer",
+                                    fontWeight: "600",
+                                    color: "#007AFF",
+                                }}
+                                onClick={() => {
+                                    // 나라 목록으로 돌아가기
+                                    setSelectedCountryForCities(null);
+                                    setResults(countries);
+                                    setQuery("");
+                                }}
+                            >
+                                ← Back to country list
+                            </div>
+                        )}
+
                         <ul style={{ listStyle: "none", padding: 0, margin: 0, overflowY: "auto", flex: 1 }}>
                             {results.map((item, idx) => {
                                 const name = item.name;
@@ -244,25 +264,18 @@ export default function SearchBar({
 
                                 // 검색어가 있고, 이름에 포함되어 있는 경우
                                 const startIdx = name.toLowerCase().indexOf(search);
+                                const isCountryInCitiesTab = currentTab === "Cities" && !selectedCountryForCities;
 
-                                if (search && startIdx !== -1) {
-                                    const endIdx = startIdx + search.length;
-                                    return (
-                                        <li
-                                            key={idx}
-                                            style={{
-                                                padding: "8px",
-                                                borderBottom: "1px solid #ddd",
-                                                cursor: "pointer",
-                                            }}
-                                            onClick={() => handleSelectItem(item)}
-                                        >
-                                            {name.slice(0, startIdx)}
-                                            <span style={{ fontWeight: "bold" }}>{name.slice(startIdx, endIdx)}</span>
-                                            {name.slice(endIdx)}
-                                        </li>
-                                    );
-                                }
+                                const content = (
+                                    <>
+                                        {name.slice(0, startIdx)}
+                                        {search && startIdx !== -1 && <span style={{ fontWeight: "bold" }}>{name.slice(startIdx, startIdx + search.length)}</span>}
+                                        {name.slice(startIdx + (search && startIdx !== -1 ? search.length : 0))}
+                                        {isCountryInCitiesTab && (
+                                            <span style={{ fontWeight: "bold" }}>{">"}</span> // 변경: ">" 표시
+                                        )}
+                                    </>
+                                );
 
                                 // 검색어 없거나 불일치
                                 return (
@@ -272,10 +285,13 @@ export default function SearchBar({
                                             padding: "8px",
                                             borderBottom: "1px solid #ddd",
                                             cursor: "pointer",
+                                            display: "flex",             // 변경: flex 적용
+                                            justifyContent: "space-between", // 변경: 오른쪽 ">" 띄우기
+                                            alignItems: "center",        // 변경: 수직 중앙 정렬
                                         }}
                                         onClick={() => handleSelectItem(item)}
                                     >
-                                        {name}
+                                        {content}
                                     </li>
                                 );
                             })}
