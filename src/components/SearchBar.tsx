@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { countries } from "../data/countries.ts";
-import { cities } from "../data/cities.ts";
 
 type Country = { name: string; code: string };
 type City = { name: string; countryCode: string; lat: number; lng: number };
@@ -15,16 +14,32 @@ export default function SearchBar({
     const [results, setResults] = useState<Array<Country | City>>(countries);
     const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<Country | City | null>(null);
+    const [selectedCountryForCities, setSelectedCountryForCities] = useState<Country | null>(null);
+    const [cityList, setCityList] = useState<City[]>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setQuery(value);
 
         if (value.trim() === "") {
-            // 검색창 비우면 전체 리스트 보여주기
-            setResults(currentTab === "Countries" ? countries : cities);
+            if (currentTab === "Countries") {
+                setResults(countries);
+            } else {
+                // Cities 탭일 때
+                if (selectedCountryForCities) {
+                    setResults(cityList); // 선택한 나라 도시 리스트
+                } else {
+                    setResults(countries); // 초기 화면은 나라 리스트
+                }
+            }
         } else {
-            const filtered = (currentTab === "Countries" ? countries : cities).filter(item =>
+            const listToFilter =
+                currentTab === "Countries"
+                    ? countries
+                    : selectedCountryForCities
+                        ? cityList
+                        : countries;
+            const filtered = listToFilter.filter(item =>
                 item.name.toLowerCase().includes(value.toLowerCase())
             );
             setResults(filtered);
@@ -32,7 +47,28 @@ export default function SearchBar({
     };
 
     const handleSelectItem = (item: Country | City) => {
-        setSelectedItem(item);
+        if (currentTab === "Cities" && !selectedCountryForCities) {
+            // 나라 클릭 → 도시 로딩
+            handleSelectCountryForCities(item as Country);
+        } else {
+            setSelectedItem(item);
+        }
+    };
+
+    // 나라 클릭 시 해당 나라 도시 불러오기
+    const handleSelectCountryForCities = async (country: Country) => {
+        setSelectedCountryForCities(country);
+        try {
+            const module = await import(`../data/cities/${country.code}.ts`);
+            // 동적 import된 모듈에서 도시 배열 가져오기
+            setCityList(module[country.code]);
+            setResults(module[country.code]);
+            setQuery(""); // 검색어 초기화
+        } catch (err) {
+            console.error("City data import failed for", country.code, err);
+            setCityList([]);
+            setResults([]);
+        }
     };
 
     const closeSelectedModal = () => setSelectedItem(null);
@@ -112,8 +148,17 @@ export default function SearchBar({
                         >
                             {/* 뒤로가기 버튼 */}
                             <button
-                                onClick={() => setIsSearchPageOpen(false)}
-                                style={{
+                                onClick={() => {
+                                    if (currentTab === "Cities" && selectedCountryForCities) {
+                                        // Cities 탭에서 도시 목록일 때 → 나라 목록으로 돌아가기
+                                        setSelectedCountryForCities(null);
+                                        setResults(countries);
+                                        setQuery("");
+                                    } else {
+                                        // 검색 페이지 닫기
+                                        setIsSearchPageOpen(false);
+                                    }
+                                }} style={{
                                     background: "none",
                                     border: "none",
                                     fontSize: "16px",
@@ -124,7 +169,7 @@ export default function SearchBar({
                             </button>
 
                             {/* 타이틀 */}
-                            <span style={{ fontSize: "18px", fontWeight: "600"}}>
+                            <span style={{ fontSize: "18px", fontWeight: "600" }}>
                                 Select
                             </span>
 
@@ -140,6 +185,8 @@ export default function SearchBar({
                                     setCurrentTab("Countries");
                                     setResults(countries);
                                     setQuery("");
+                                    setSelectedCountryForCities(null); // 초기화
+
                                 }}
                                 style={{
                                     flex: 1,
@@ -159,8 +206,9 @@ export default function SearchBar({
                             <button
                                 onClick={() => {
                                     setCurrentTab("Cities");
-                                    setResults(cities);
+                                    setResults(countries); // Cities 탭 초기 화면은 나라 리스트
                                     setQuery("");
+                                    setSelectedCountryForCities(null); // 초기화
                                 }}
                                 style={{
                                     flex: 1,
@@ -232,7 +280,6 @@ export default function SearchBar({
                                 );
                             })}
                         </ul>
-
                     </div>
                 </div>
             )}
