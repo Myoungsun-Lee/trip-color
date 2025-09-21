@@ -190,20 +190,49 @@ export default function SearchBar({
 
                         {/* 리스트 */}
                         <ul style={{ listStyle: "none", padding: 0, margin: 0, overflowY: "auto", flex: 1 }}>
-                            {results.map((item, idx) => (
-                                <li
-                                    key={idx}
-                                    style={{
-                                        padding: "8px",
-                                        borderBottom: "1px solid #ddd",
-                                        cursor: "pointer",
-                                    }}
-                                    onClick={() => handleSelectItem(item)}
-                                >
-                                    {item.name}
-                                </li>
-                            ))}
+                            {results.map((item, idx) => {
+                                const name = item.name;
+                                const search = query.trim().toLowerCase();
+
+                                // 검색어가 있고, 이름에 포함되어 있는 경우
+                                const startIdx = name.toLowerCase().indexOf(search);
+
+                                if (search && startIdx !== -1) {
+                                    const endIdx = startIdx + search.length;
+                                    return (
+                                        <li
+                                            key={idx}
+                                            style={{
+                                                padding: "8px",
+                                                borderBottom: "1px solid #ddd",
+                                                cursor: "pointer",
+                                            }}
+                                            onClick={() => handleSelectItem(item)}
+                                        >
+                                            {name.slice(0, startIdx)}
+                                            <span style={{ fontWeight: "bold" }}>{name.slice(startIdx, endIdx)}</span>
+                                            {name.slice(endIdx)}
+                                        </li>
+                                    );
+                                }
+
+                                // 검색어 없거나 불일치
+                                return (
+                                    <li
+                                        key={idx}
+                                        style={{
+                                            padding: "8px",
+                                            borderBottom: "1px solid #ddd",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => handleSelectItem(item)}
+                                    >
+                                        {name}
+                                    </li>
+                                );
+                            })}
                         </ul>
+
                     </div>
                 </div>
             )}
