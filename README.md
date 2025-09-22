@@ -1,3 +1,11 @@
+## 프로젝트 설명
+
+빠니보틀 여행 앱 보고 꽂혀서 갑자기 만들기 시작한 프로젝트<br>
+gpt 이용해서 로컬웹서비스 만들기!<br>
+그동안 여행 갔다 왔던 곳 지도에 표시하고 통계도 내봐야지
+<br>
+<br>
+
 ## 프로젝트 구조
 
 ```plaintext
@@ -16,8 +24,11 @@ color-trip/
     │   ├── Map.tsx             // 지도 전용 컴포넌트 (App에서 불러다 씀)
     │   └── SearchBar.tsx       // 나라 혹은 도시 검색
     ├── data
-    │   ├── cities.json
-    │   └── countries.json
+    │   ├── cities
+    │   │   ├── AFG.ts
+    │   │   ├── ...
+    │   │   └── ZWE.ts
+    │   └── countries.ts
     ├── index.css
     ├── index.tsx
     ├── reportWebVitals.tsx
