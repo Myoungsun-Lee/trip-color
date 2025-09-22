@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { countries } from "../data/countries.ts";
+import styles from "./SearchBar.module.css";
+
 
 type Country = { name: string; code: string };
 type City = { name: string; countryCode: string; lat: number; lng: number };
@@ -91,24 +93,10 @@ export default function SearchBar({
     return (
         <>
             {/* 검색 버튼 */}
-            <button
-                onClick={() => setIsSearchPageOpen(true)}
-                style={{
-                    width: "100%",
-                    height: "50%",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                    borderRadius: "12px",
-                    border: "none",
-                    backgroundColor: "#2c2c30ff",
-                    color: "#f2f2f7",
-                    boxShadow: "inset 0 -1px 0 0 #ffffff1a",
-                    WebkitAppearance: "none",
-                    transition: "background 0.2s ease-in-out",
-                }}
-            >
+            <button onClick={() => setIsSearchPageOpen(true)} className={styles.button}>
                 🔍 Search
             </button>
+
 
             {/* 전체 화면 검색 페이지 */}
             {isSearchPageOpen && (
@@ -175,7 +163,7 @@ export default function SearchBar({
                                 Select
                             </span>
 
-                            {/* 오른쪽은 공간 확보용 (비워두기) */}
+                            {/* 오른쪽 공간 확보용 */}
                             <div style={{ width: "50px" }} />
                         </div>
 
@@ -304,62 +292,14 @@ export default function SearchBar({
 
             {/* 선택 모달 */}
             {selectedItem && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: "#1a1a1d1a",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1001,
-                    }}
-                >
-                    <div
-                        style={{
-                            width: "300px",
-                            backgroundColor: "white",
-                            borderRadius: "8px",
-                            padding: "16px",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "12px",
-                        }}
-                    >
+                <div className={styles.selectedOverlay}>
+                    <div className={styles.selectedContainer}>
                         <h2 style={{ fontSize: "18px", marginBottom: "8px" }}>{selectedItem.name}</h2>
-                        <button
-                            onClick={handleBeenClick}
-                            style={{
-                                backgroundColor: "#007AFF",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "12px",
-                                padding: "12px",
-                                fontSize: "16px",
-                                fontWeight: "500",
-                                cursor: "pointer",
-                                boxShadow: "0 2px 4px #1a1a1d1a",
-                            }}
-                        >
+                        <button onClick={handleBeenClick} className={styles.beenButton}>
                             Been
                         </button>
 
-                        <button
-                            onClick={closeSelectedModal}
-                            style={{
-                                backgroundColor: "#f2f2f7",
-                                color: "#007AFF",
-                                border: "none",
-                                borderRadius: "12px",
-                                padding: "12px",
-                                fontSize: "16px",
-                                fontWeight: "500",
-                                cursor: "pointer",
-                            }}
-                        >
+                        <button onClick={handleBeenClick} className={styles.closeButton}>
                             Close
                         </button>
                     </div>
