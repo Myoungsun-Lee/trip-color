@@ -1,7 +1,7 @@
 /* SearchBar.module.css */
 
 /* 검색 버튼 */
-.button {
+.searchButton {
   width: 100%;
   height: 50%;
   font-size: 16px;
@@ -15,21 +15,21 @@
   transition: background 0.2s ease-in-out;
 }
 
-/* 전체 화면 검색 페이지 스타일 시작 */
+/* 메인 검색 버튼 */
 .searchOverlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-/* 모달 안쪽 컨테이너 */
+/* 메인 검색 버튼 컨테이너 */
 .searchContainer {
   width: 100%;
   height: 100%;
@@ -42,7 +42,7 @@
 }
 
 /* 상단 네비게이션바 */
-.navbar {
+.searchNavbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,25 +51,11 @@
 }
 
 /* 네이게이션 바의 뒤로가기 버튼 */
-.navButton {
+.searchBack {
   background: none;
   border: none;
   font-size: 16px;
   cursor: pointer;
-  color: #007aff;
-}
-
-/* 네이게이션 바의 Select 타이틀 */
-.navTitle {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-/* Countries and Cities 탭 컨테이너 */
-.tabContainer {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
 }
 
 /* Countries and Cities 탭 버튼 */
@@ -96,16 +82,16 @@
 }
 
 /* 리스트 */
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
-  flex: 1;
+.searchList {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  font-weight: 600;
+  color: #007AFF;
 }
 
-/* 리스트 결과 */
-.listItem {
+/* 리스트 결과-검색어 없거나 불일치 케이스 */
+.searchListNoItem {
   padding: 8px;
   border-bottom: 1px solid #ddd;
   cursor: pointer;

@@ -93,49 +93,17 @@ export default function SearchBar({
     return (
         <>
             {/* 검색 버튼 */}
-            <button onClick={() => setIsSearchPageOpen(true)} className={styles.button}>
+            <button onClick={() => setIsSearchPageOpen(true)} className={styles.searchButton}>
                 🔍 Search
             </button>
 
 
-            {/* 전체 화면 검색 페이지 */}
+            {/* 검색 페이지 */}
             {isSearchPageOpen && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1000,
-                    }}
-                >
-                    <div
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            backgroundColor: "white",
-                            borderRadius: "0px",
-                            padding: "16px",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "12px",
-                        }}
-                    >
+                <div className={styles.searchOverlay}>
+                    <div className={styles.searchContainer}>
                         {/* 상단 네비게이션 바 */}
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                padding: "12px 16px",
-                                borderBottom: "1px solid #ffffff1a",
-                            }}
-                        >
+                        <div className={styles.searchNavbar}>
                             {/* 뒤로가기 버튼 */}
                             <button
                                 onClick={() => {
@@ -148,12 +116,8 @@ export default function SearchBar({
                                         // 검색 페이지 닫기
                                         setIsSearchPageOpen(false);
                                     }
-                                }} style={{
-                                    background: "none",
-                                    border: "none",
-                                    fontSize: "16px",
-                                    cursor: "pointer",
                                 }}
+                                className={styles.searchBack}
                             >
                                 ← Back
                             </button>
@@ -176,20 +140,8 @@ export default function SearchBar({
                                     setResults(countries);
                                     setQuery("");
                                     setSelectedCountryForCities(null); // 초기화
-
                                 }}
-                                style={{
-                                    flex: 1,
-                                    padding: "10px 16px",
-                                    fontWeight: "500",
-                                    borderRadius: "10px",
-                                    border: "none",
-                                    backgroundColor: currentTab === "Countries" ? "#007AFF" : "#f2f2f7",
-                                    color: currentTab === "Countries" ? "white" : "#007AFF",
-                                    cursor: "pointer",
-                                    fontSize: "16px",
-                                    transition: "all 0.2s ease-in-out",
-                                }}
+                                className={`${styles.tabButton} ${currentTab === "Countries" ? styles.tabActive : styles.tabInactive}`}
                             >
                                 Countries
                             </button>
@@ -200,18 +152,7 @@ export default function SearchBar({
                                     setQuery("");
                                     setSelectedCountryForCities(null); // 초기화
                                 }}
-                                style={{
-                                    flex: 1,
-                                    padding: "10px 16px",
-                                    fontWeight: "500",
-                                    borderRadius: "10px",
-                                    border: "none",
-                                    backgroundColor: currentTab === "Cities" ? "#007AFF" : "#f2f2f7",
-                                    color: currentTab === "Cities" ? "white" : "#007AFF",
-                                    cursor: "pointer",
-                                    fontSize: "16px",
-                                    transition: "all 0.2s ease-in-out",
-                                }}
+                                className={`${styles.tabButton} ${currentTab === "Cities" ? styles.tabActive : styles.tabInactive}`}
                             >
                                 Cities
                             </button>
@@ -229,13 +170,7 @@ export default function SearchBar({
                         {/* 리스트 */}
                         {currentTab === "Cities" && selectedCountryForCities && (
                             <div
-                                style={{
-                                    padding: "8px",
-                                    borderBottom: "1px solid #ddd",
-                                    cursor: "pointer",
-                                    fontWeight: "600",
-                                    color: "#007AFF",
-                                }}
+                                className={styles.searchList}
                                 onClick={() => {
                                     // 나라 목록으로 돌아가기
                                     setSelectedCountryForCities(null);
@@ -268,14 +203,7 @@ export default function SearchBar({
                                 return (
                                     <li
                                         key={idx}
-                                        style={{
-                                            padding: "8px",
-                                            borderBottom: "1px solid #ddd",
-                                            cursor: "pointer",
-                                            display: "flex",
-                                            justifyContent: "space-between", // 오른쪽 ">" 띄우기
-                                            alignItems: "center",
-                                        }}
+                                        className={styles.searchListNoItem}
                                         onClick={() => handleSelectItem(item)}
                                     >
                                         <span style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
