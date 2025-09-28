@@ -261,9 +261,6 @@ export default function SearchBar({
                                         {name.slice(0, startIdx)}
                                         {search && startIdx !== -1 && <span style={{ fontWeight: "bold" }}>{name.slice(startIdx, startIdx + search.length)}</span>}
                                         {name.slice(startIdx + (search && startIdx !== -1 ? search.length : 0))}
-                                        {isCountryInCitiesTab && (
-                                            <span style={{ fontWeight: "bold" }}>{">"}</span> // 변경: ">" 표시
-                                        )}
                                     </>
                                 );
 
@@ -281,7 +278,10 @@ export default function SearchBar({
                                         }}
                                         onClick={() => handleSelectItem(item)}
                                     >
-                                        {content}
+                                        <span style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                                            <span>{content}</span>
+                                            {isCountryInCitiesTab && <span>{">"}</span>}
+                                        </span>
                                     </li>
                                 );
                             })}
