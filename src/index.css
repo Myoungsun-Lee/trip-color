@@ -14,7 +14,7 @@
 }
 
 .map {
-  flex: 1 0 80%; /* 높이 비율 80% */
+  flex: 1 0 70%; /* 높이 비율 70% */
   background-color: #e0e0e0;
 }
 

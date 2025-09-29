@@ -1,2 +1,10 @@
 node_modules
 .env
+.env.local
+/build
+/dist
+.cache
+.vscode
+.DS_Store
+.env.local
+/.firebase

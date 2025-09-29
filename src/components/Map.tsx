@@ -36,7 +36,9 @@ const MyMap = ({ visitedCities }: { visitedCities: any }) => {
         style={{ width: '100%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/dark-v10"
         mapboxAccessToken={MAPBOX_TOKEN}
-        onMove={evt => setZoom(evt.viewState.zoom)}
+        onMove={(evt: { viewState: { zoom: React.SetStateAction<number>; }; }) => setZoom(evt.viewState.zoom)}
+        dragRotate={false}        // 회전 막기
+        pitchWithRotate={false}   // 두 손가락 기울이기 막기
       >
         {/*방문한 나라 영역 색칠 (줌 5 이하에서만 보이도록)*/}
         {zoom <= 5 && (
