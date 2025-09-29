@@ -14,12 +14,12 @@
 }
 
 .map {
-  flex: 1 0 70%; /* 높이 비율 70% */
+  flex: 1 0 60%; /* 높이 비율 60% */
   background-color: #e0e0e0;
 }
 
 .mytrip {
-  flex: 0 0 10%; /* 높이 비율 10% */
+  flex: 0 0 30%; /* 높이 비율 30% */
   background-color: #f0f0f0;
   display: flex;
   align-items: center;

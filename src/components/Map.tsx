@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Map, { Source, Layer, Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const MAPBOX_TOKEN = "ENTER_YOUT_MAPBOX_TOKEN";
+const MAPBOX_TOKEN = "ENTER_YOUR_MAPBOX_TOKEN";
 
 const MyMap = ({ visitedCities }: { visitedCities: any }) => {
   const [zoom, setZoom] = useState(2);
@@ -39,6 +39,7 @@ const MyMap = ({ visitedCities }: { visitedCities: any }) => {
         onMove={(evt: { viewState: { zoom: React.SetStateAction<number>; }; }) => setZoom(evt.viewState.zoom)}
         dragRotate={false}        // 회전 막기
         pitchWithRotate={false}   // 두 손가락 기울이기 막기
+        touchZoomRotate={false}   // 두 손가락 회전 막기
       >
         {/*방문한 나라 영역 색칠 (줌 5 이하에서만 보이도록)*/}
         {zoom <= 5 && (
